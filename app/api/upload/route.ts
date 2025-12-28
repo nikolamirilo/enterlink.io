@@ -1,64 +1,5 @@
+import { startPipeline, uploadToVectorize } from "@/lib/vectorize";
 import { NextRequest, NextResponse } from "next/server";
-
-async function uploadToVectorize(
-  file: File,
-  config: { apiKey: string; connectorId: string; orgId: string }
-) {
-  console.log(
-    `Initiating upload for ${file.name} to: https://api.vectorize.io/v1/org/${config.orgId}/uploads/${config.connectorId}/files`
-  );
-
-  // Step 1: Initiate upload (Get Signed URL)
-  const initiateResponse = await fetch(
-    `https://api.vectorize.io/v1/org/${config.orgId}/uploads/${config.connectorId}/files`,
-    {
-      method: "PUT",
-      headers: {
-        Authorization: config.apiKey,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        name: file.name,
-        contentType: file.type,
-      }),
-    }
-  );
-
-  const initiateData = await initiateResponse.json();
-
-  if (!initiateResponse.ok) {
-    console.error(`Vectorize Init API error for ${file.name}:`, initiateData);
-    throw new Error(
-      initiateData.message || "Failed to initiate upload to Vectorize"
-    );
-  }
-
-  const uploadUrl = initiateData.uploadUrl;
-  if (!uploadUrl) {
-    console.error(`No uploadUrl returned from Vectorize for ${file.name}`);
-    throw new Error("Invalid response from Vectorize: No upload URL");
-  }
-
-  // Step 2: Upload file content to Signed URL
-  const uploadResponse = await fetch(uploadUrl, {
-    method: "PUT",
-    headers: {
-      "Content-Type": file.type,
-    },
-    body: file,
-  });
-
-  if (!uploadResponse.ok) {
-    const uploadErrorText = await uploadResponse.text();
-    console.error(
-      `Vectorize S3 Upload error for ${file.name}:`,
-      uploadErrorText
-    );
-    throw new Error("Failed to upload file content to storage");
-  }
-
-  return initiateData;
-}
 
 export async function POST(request: NextRequest) {
   try {
@@ -78,8 +19,9 @@ export async function POST(request: NextRequest) {
       const vectorizeApiKey = process.env.VECTORIZE_API_KEY;
       const connectorId = process.env.VECTORIZE_CONNECTOR_ID;
       const organizationId = process.env.VECTORIZE_ORG_ID;
+      const pipelineId = process.env.VECTORIZE_PIPELINE_ID;
 
-      if (!vectorizeApiKey || !connectorId || !organizationId) {
+      if (!vectorizeApiKey || !connectorId || !organizationId || !pipelineId) {
         console.error("Missing Vectorize configuration");
         return NextResponse.json(
           { error: "Server misconfiguration: Missing Vectorize credentials" },
@@ -92,6 +34,8 @@ export async function POST(request: NextRequest) {
         connectorId: connectorId,
         orgId: organizationId,
       };
+
+
 
       const results = await Promise.allSettled(
         files.map((file) => uploadToVectorize(file, config))
@@ -112,14 +56,29 @@ export async function POST(request: NextRequest) {
         );
       }
 
+      // Start pipeline after successful uploads
+      let pipelineStarted = false;
+      if (successes > 0) {
+        try {
+          await startPipeline({
+            apiKey: vectorizeApiKey,
+            orgId: organizationId,
+            pipelineId: pipelineId,
+          });
+          pipelineStarted = true;
+        } catch (pipelineError) {
+          console.error("Failed to start pipeline:", pipelineError);
+        }
+      }
+
       return NextResponse.json({
         success: true,
-        message: `Successfully uploaded ${successes} file(s). ${
-          failures > 0 ? `${failures} failed.` : ""
-        }`,
+        message: `Successfully uploaded ${successes} file(s). ${failures > 0 ? `${failures} failed.` : ""
+          }${pipelineStarted ? " Pipeline started." : ""}`,
         data: {
           successCount: successes,
           failureCount: failures,
+          pipelineStarted,
         },
       });
     }

@@ -1,10 +1,10 @@
-import { NextRequest, NextResponse } from "next/server";
 import { searchVectorize } from "@/lib/vectorize";
+import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { query, numResults = 1000, rerank = true } = body;
+    const { query, numResults = 100, rerank = true } = body;
 
     if (!query || typeof query !== "string") {
       return NextResponse.json(
