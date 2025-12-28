@@ -122,6 +122,7 @@ export async function POST(req: Request) {
               "Incident Narrative": "Bracken, Daniel 5/27/2025 9:45:22 AM -05:00: Ambulance 19 responded for chest pain. Patient alert and oriented, complaining of substernal chest pressure radiating to left arm. 12-lead ECG showed ST elevation in inferior leads. Crew initiated ALS protocol, administered aspirin and nitroglycerin per medical control. Patient transported priority 1 to Franciscan Health Olympia Fields. See EHR PCR #25-00914 for full details.",
               "IncidentID": "bf81a92b-cd7f-4a96-ac5c-b2e800c264ee"
             }
+            IMPORTANT: If user ask something that does not resemble on any of mentioned structures try to create query that will find that info and make it very concise and compact
             User Message: "${content}"`,
     });
 
