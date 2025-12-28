@@ -121,6 +121,8 @@ export async function uploadToVectorize(
 export async function startPipeline(config: { apiKey: string; orgId: string; pipelineId: string }) {
   console.log(`Starting pipeline: ${config.pipelineId}`);
 
+  await new Promise(resolve => setTimeout(resolve, 8000));
+
   const response = await fetch(
     `https://api.vectorize.io/v1/org/${config.orgId}/pipelines/${config.pipelineId}/start`,
     {
