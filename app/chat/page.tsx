@@ -47,6 +47,52 @@ export default function ChatPage() {
                 provide information.
               </p>
             </div>
+
+            {/* Example Prompts */}
+            <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-3 max-w-2xl mx-auto">
+              {[
+                {
+                  icon: "🚑",
+                  title: "EMS Calls Overview",
+                  prompt: "Show me all EMS calls from 2025 and their response times",
+                },
+                {
+                  icon: "⏱️",
+                  title: "Response Time Analysis",
+                  prompt: "What was the average response time for incidents in District 19-2?",
+                },
+                {
+                  icon: "📋",
+                  title: "Incident Details",
+                  prompt: "Give me details about incident F25-00914 including CAD notes and narrative",
+                },
+                {
+                  icon: "🔥",
+                  title: "Shift Activity",
+                  prompt: "What incidents were handled by the Red shift?",
+                },
+              ].map((example, index) => (
+                <button
+                  key={index}
+                  onClick={() => {
+                    sendMessage({ text: example.prompt });
+                  }}
+                  className="group text-left p-4 rounded-xl bg-[#1e2d4b]/40 border border-white/5 hover:border-[#169FD6]/50 hover:bg-[#1e2d4b]/60 transition-all duration-200 cursor-pointer"
+                >
+                  <div className="flex items-start gap-3">
+                    <span className="text-2xl">{example.icon}</span>
+                    <div>
+                      <h3 className="font-medium text-white group-hover:text-[#169FD6] transition-colors">
+                        {example.title}
+                      </h3>
+                      <p className="text-sm text-gray-400 mt-1 line-clamp-2">
+                        {example.prompt}
+                      </p>
+                    </div>
+                  </div>
+                </button>
+              ))}
+            </div>
           </div>
         ) : (
           <div className="space-y-6 pb-4">
