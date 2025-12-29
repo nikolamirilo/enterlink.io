@@ -1,3 +1,4 @@
+import { ClientLayout } from "@/components/ClientLayout";
 import { Sidebar } from "@/components/Sidebar";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
@@ -28,12 +29,14 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <div className="flex min-h-screen">
-          <Sidebar />
-          <main className="flex-1 w-full">
-            {children}
-          </main>
-        </div>
+        <ClientLayout>
+          <div className="flex min-h-screen">
+            <Sidebar />
+            <main className="flex-1 w-full pt-16 lg:pt-0">
+              {children}
+            </main>
+          </div>
+        </ClientLayout>
       </body>
     </html>
   );

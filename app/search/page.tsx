@@ -1,8 +1,7 @@
 "use client";
 
+import { FileText, Loader2, Search, Sparkles } from "lucide-react";
 import { useState } from "react";
-import Link from "next/link";
-import { Search, Loader2, ArrowLeft, FileText, Sparkles } from "lucide-react";
 
 interface SearchResult {
   id?: string;
@@ -64,11 +63,11 @@ export default function SearchPage() {
 
   return (
     <div className="min-h-screen">
-      <div className="container mx-auto px-4 py-16">
+      <div className="container mx-auto px-4 sm:px-6 py-8 sm:py-16">
         {/* Header */}
-        <div className="text-center mb-12">
+        <div className="text-center mb-8 sm:mb-12">
           <div className="flex flex-row gap-2 justify-center items-center mx-auto">
-            <h1 className="text-4xl font-bold text-white mb-4">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-2 sm:mb-4">
               Search Documents
             </h1>
           </div>
@@ -76,7 +75,7 @@ export default function SearchPage() {
 
 
         {/* Search Form */}
-        <div className="max-w-4xl mx-auto mb-8">
+        <div className="max-w-4xl mx-auto mb-6 sm:mb-8">
           <form onSubmit={handleSearch} className="relative">
             <div className="relative">
               <input
@@ -84,7 +83,7 @@ export default function SearchPage() {
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 placeholder="Ask a question or search for information..."
-                className="w-full px-6 py-5 pr-14 text-lg rounded-2xl border-2 border-white/5 bg-[#0d1629] text-white focus:border-[#169FD6] focus:outline-none shadow-lg transition-all placeholder-gray-500"
+                className="w-full px-4 sm:px-6 py-4 sm:py-5 pr-14 text-base sm:text-lg rounded-xl sm:rounded-2xl border-2 border-white/5 bg-[#0d1629] text-white focus:border-[#169FD6] focus:outline-none shadow-lg transition-all placeholder-gray-500"
                 disabled={searching}
               />
               <button
@@ -92,7 +91,7 @@ export default function SearchPage() {
                 disabled={searching || !query.trim()}
                 className={`
                   absolute right-2 top-1/2 -translate-y-1/2
-                  p-3 rounded-xl transition-all
+                  p-2 sm:p-3 rounded-lg sm:rounded-xl transition-all
                   ${searching || !query.trim()
                     ? "bg-gray-700 text-gray-400 cursor-not-allowed"
                     : "bg-[#169FD6] text-white hover:bg-[#0A68A8] shadow-md hover:shadow-lg"
@@ -100,9 +99,9 @@ export default function SearchPage() {
                 `}
               >
                 {searching ? (
-                  <Loader2 className="w-6 h-6 animate-spin" />
+                  <Loader2 className="w-5 sm:w-6 h-5 sm:h-6 animate-spin" />
                 ) : (
-                  <Search className="w-6 h-6" />
+                  <Search className="w-5 sm:w-6 h-5 sm:h-6" />
                 )}
               </button>
             </div>
@@ -112,29 +111,29 @@ export default function SearchPage() {
         {/* Results */}
         <div className="max-w-4xl mx-auto">
           {searching && (
-            <div className="text-center py-12">
-              <Loader2 className="w-12 h-12 animate-spin text-[#169FD6] mx-auto mb-4" />
-              <p className="text-gray-400">
+            <div className="text-center py-8 sm:py-12">
+              <Loader2 className="w-10 sm:w-12 h-10 sm:h-12 animate-spin text-[#169FD6] mx-auto mb-4" />
+              <p className="text-gray-400 text-sm sm:text-base">
                 Searching through your documents...
               </p>
             </div>
           )}
 
           {!searching && hasSearched && results.length === 0 && (
-            <div className="text-center py-12 bg-[#1e2d4b]/30 backdrop-blur-sm rounded-2xl shadow-lg border border-white/5">
-              <Sparkles className="w-16 h-16 text-gray-600 mx-auto mb-4" />
-              <h3 className="text-xl font-semibold text-white mb-2">
+            <div className="text-center py-8 sm:py-12 px-4 bg-[#1e2d4b]/30 backdrop-blur-sm rounded-xl sm:rounded-2xl shadow-lg border border-white/5">
+              <Sparkles className="w-12 sm:w-16 h-12 sm:h-16 text-gray-600 mx-auto mb-4" />
+              <h3 className="text-lg sm:text-xl font-semibold text-white mb-2">
                 No results found
               </h3>
-              <p className="text-gray-400">
+              <p className="text-gray-400 text-sm sm:text-base">
                 Try rephrasing your query or upload more documents
               </p>
             </div>
           )}
 
           {!searching && results.length > 0 && (
-            <div className="space-y-4">
-              <p className="text-sm text-gray-400 mb-4">
+            <div className="space-y-3 sm:space-y-4">
+              <p className="text-xs sm:text-sm text-gray-400 mb-3 sm:mb-4">
                 Found {results.length} relevant{" "}
                 {results.length === 1 ? "result" : "results"}
               </p>
@@ -150,17 +149,18 @@ export default function SearchPage() {
                 return (
                   <div
                     key={result.id || index}
-                    className="bg-[#1e2d4b]/30 backdrop-blur-sm rounded-xl shadow-lg p-6 hover:bg-[#1e2d4b]/50 transition-all border border-white/5"
+                    className="bg-[#1e2d4b]/30 backdrop-blur-sm rounded-lg sm:rounded-xl shadow-lg p-4 sm:p-6 hover:bg-[#1e2d4b]/50 transition-all border border-white/5"
                   >
-                    <div className="flex items-start gap-4">
-                      <div className="flex-shrink-0">
+                    <div className="flex items-start gap-3 sm:gap-4">
+                      <div className="flex-shrink-0 hidden sm:block">
                         <FileText className="w-6 h-6 text-[#169FD6]" />
                       </div>
 
                       <div className="flex-1 min-w-0">
-                        <div className="flex items-center justify-between mb-3">
-                          <div className="flex items-center gap-3">
-                            <h3 className="font-semibold text-white">
+                        <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-2 sm:mb-3 gap-2">
+                          <div className="flex items-center gap-2 sm:gap-3 flex-wrap">
+                            <FileText className="w-5 h-5 text-[#169FD6] sm:hidden shrink-0" />
+                            <h3 className="font-semibold text-white text-sm sm:text-base truncate">
                               {filename}
                             </h3>
                             {chunkIndex !== undefined &&
@@ -171,13 +171,13 @@ export default function SearchPage() {
                               )}
                           </div>
                           <div className="flex items-center gap-2">
-                            <div className="text-sm font-medium text-[#169FD6]">
+                            <div className="text-xs sm:text-sm font-medium text-[#169FD6]">
                               {(score * 100).toFixed(1)}% match
                             </div>
                           </div>
                         </div>
 
-                        <p className="text-gray-300 leading-relaxed">
+                        <p className="text-gray-300 leading-relaxed text-sm sm:text-base">
                           {content}
                         </p>
                       </div>
@@ -189,12 +189,12 @@ export default function SearchPage() {
           )}
 
           {!searching && !hasSearched && (
-            <div className="text-center py-12 bg-[#1e2d4b]/30 backdrop-blur-sm rounded-2xl shadow-lg border border-white/5">
-              <Search className="w-16 h-16 text-gray-600 mx-auto mb-4" />
-              <h3 className="text-xl font-semibold text-white mb-2">
+            <div className="text-center py-8 sm:py-12 px-4 bg-[#1e2d4b]/30 backdrop-blur-sm rounded-xl sm:rounded-2xl shadow-lg border border-white/5">
+              <Search className="w-12 sm:w-16 h-12 sm:h-16 text-gray-600 mx-auto mb-4" />
+              <h3 className="text-lg sm:text-xl font-semibold text-white mb-2">
                 Start searching
               </h3>
-              <p className="text-gray-400">
+              <p className="text-gray-400 text-sm sm:text-base">
                 Enter a query above to search through your documents
               </p>
             </div>

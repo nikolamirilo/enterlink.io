@@ -43,10 +43,10 @@ export default function FileDropzone({
     <div
       {...getRootProps()}
       className={`
-        border-2 border-dashed rounded-xl p-8 text-center cursor-pointer
+        border-2 border-dashed rounded-lg sm:rounded-xl p-4 sm:p-6 md:p-8 text-center cursor-pointer
         transition-all duration-200 ease-in-out
         ${isDragActive
-          ? "border-[#169FD6] bg-[#169FD6]/10 scale-105"
+          ? "border-[#169FD6] bg-[#169FD6]/10 scale-[1.02] sm:scale-105"
           : "border-white/10 hover:border-[#169FD6] hover:bg-[#169FD6]/5"
         }
         ${disabled ? "opacity-50 cursor-not-allowed" : ""}
@@ -54,32 +54,32 @@ export default function FileDropzone({
     >
       <input {...getInputProps()} />
 
-      <div className="flex flex-col items-center gap-4">
+      <div className="flex flex-col items-center gap-3 sm:gap-4">
         {selectedFiles.length > 0 ? (
-          <div className="w-full space-y-3">
+          <div className="w-full space-y-2 sm:space-y-3">
             <div className="flex flex-wrap gap-2 justify-center mb-2">
-              <div className="bg-[#169FD6]/20 text-[#169FD6] px-3 py-1 rounded-full text-sm font-medium">
+              <div className="bg-[#169FD6]/20 text-[#169FD6] px-3 py-1 rounded-full text-xs sm:text-sm font-medium">
                 {selectedFiles.length} file
                 {selectedFiles.length !== 1 ? "s" : ""} selected
               </div>
             </div>
-            <div className="max-h-60 overflow-y-auto space-y-2 px-2">
+            <div className="max-h-48 sm:max-h-60 overflow-y-auto space-y-2 px-1 sm:px-2">
               {selectedFiles.map((file, index) => (
                 <div
                   key={`${file.name}-${index}`}
-                  className="flex items-center gap-3 bg-[#101C34] p-3 rounded-lg border border-white/5 shadow-sm text-left relative group"
+                  className="flex items-center gap-2 sm:gap-3 bg-[#101C34] p-2 sm:p-3 rounded-lg border border-white/5 shadow-sm text-left relative group"
                 >
                   {file.type.includes("pdf") ? (
-                    <File className="w-8 h-8 text-red-400 shrink-0" />
+                    <File className="w-6 h-6 sm:w-8 sm:h-8 text-red-400 shrink-0" />
                   ) : file.type.includes("csv") ||
                     file.name.endsWith(".csv") ? (
-                    <Table className="w-8 h-8 text-green-400 shrink-0" />
+                    <Table className="w-6 h-6 sm:w-8 sm:h-8 text-green-400 shrink-0" />
                   ) : (
-                    <FileText className="w-8 h-8 text-[#169FD6] shrink-0" />
+                    <FileText className="w-6 h-6 sm:w-8 sm:h-8 text-[#169FD6] shrink-0" />
                   )}
                   <div className="flex-1 min-w-0">
                     <p
-                      className="text-sm font-semibold text-white truncate"
+                      className="text-xs sm:text-sm font-semibold text-white truncate"
                       title={file.name}
                     >
                       {file.name}
@@ -103,16 +103,16 @@ export default function FileDropzone({
           </div>
         ) : (
           <>
-            <Upload className="w-16 h-16 text-gray-500" />
+            <Upload className="w-12 h-12 sm:w-16 sm:h-16 text-gray-500" />
             <div>
-              <p className="text-lg font-semibold text-white">
+              <p className="text-base sm:text-lg font-semibold text-white">
                 {isDragActive
                   ? "Drop your files here"
                   : "Drag & drop your files here"}
               </p>
-              <p className="text-sm text-gray-400 mt-2">or click to browse</p>
+              <p className="text-xs sm:text-sm text-gray-400 mt-1 sm:mt-2">or click to browse</p>
             </div>
-            <p className="text-xs text-gray-500 mt-4">Supported formats: CSV</p>
+            <p className="text-xs text-gray-500 mt-2 sm:mt-4">Supported formats: CSV</p>
           </>
         )}
       </div>
