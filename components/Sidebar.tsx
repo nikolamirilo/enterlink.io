@@ -36,14 +36,7 @@ export function Sidebar() {
     return (
         <>
             {/* Mobile Header */}
-            <header className="lg:hidden fixed top-0 left-0 right-0 z-50 bg-background border-b border-[#1e2d4b] px-4 py-3 flex items-center justify-between">
-                <Image
-                    src="/logo.webp"
-                    alt="Logo"
-                    width={500}
-                    height={500}
-                    className="w-24 h-auto"
-                />
+            <header className="lg:hidden fixed top-0 left-0 right-0 z-50 bg-background border-b border-[#1e2d4b] px-4 py-2 flex items-center justify-end">
                 <button
                     onClick={() => setIsOpen(!isOpen)}
                     className="p-2 rounded-lg bg-[#1e2d4b] text-white hover:bg-[#2a3d5b] transition-colors"
